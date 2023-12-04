@@ -1,0 +1,18 @@
+Index: main.tf
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>### PROVIDER\nprovider \"google\" {\n  project = \"advancedterraform\" #replace this with your project-id\n  region  = \"us-central1\"\n  zone    = \"us-central1-a\"\n}\n\n### NETWORK\ndata \"google_compute_network\" \"default\" {\n  name                    = \"default\"\n}\n\n## SUBNET\nresource \"google_compute_subnetwork\" \"subnet-1\" {\n  name                     = \"subnet1\"\n  ip_cidr_range            = \"10.127.0.0/20\"\n  network                  = data.google_compute_network.default.self_link\n  region                   = \"us-central1\"\n  private_ip_google_access = true\n}\n\nresource \"google_compute_firewall\" \"default\" {\n  name    = \"test-firewall\"\n  network = data.google_compute_network.default.self_link\n\n  allow {\n    protocol = \"icmp\"\n  }\n\n  allow {\n    protocol = \"tcp\"\n    ports    = [\"80\", \"8080\", \"1000-2000\", \"22\"]\n  }\n\n  source_tags = [\"web\"]\n}\n\n### COMPUTE\n## NGINX PROXY\nresource \"google_compute_instance\" \"nginx_instance\" {\n  name         = \"nginx-proxy\"\n  machine_type = \"f1-micro\"\n  tags = [\"web\"]\n  \n  boot_disk {\n    initialize_params {\n      image = \"debian-cloud/debian-11\"\n    }\n  }\n\n  network_interface {\n    network = data.google_compute_network.default.self_link\n    subnetwork = google_compute_subnetwork.subnet-1.self_link\n    access_config {\n      \n    }\n  }\n}\n\n## WEB1\nresource \"google_compute_instance\" \"web1\" {\n  name         = \"web1\"\n  machine_type = \"f1-micro\"\n  \n  boot_disk {\n    initialize_params {\n      image = \"debian-cloud/debian-11\"\n    }\n  }\n\n  network_interface {\n    # A default network is created for all GCP projects\n    network = data.google_compute_network.default.self_link\n    subnetwork = google_compute_subnetwork.subnet-1.self_link\n  }\n}\n## WEB2\nresource \"google_compute_instance\" \"web2\" {\n  name         = \"web2\"\n  machine_type = \"f1-micro\"\n  \n  boot_disk {\n    initialize_params {\n      image = \"debian-cloud/debian-11\"\n    }\n  }\n\n  network_interface {\n    network = data.google_compute_network.default.self_link\n    subnetwork = google_compute_subnetwork.subnet-1.self_link\n  }\n}\n## WEB3\nresource \"google_compute_instance\" \"web3\" {\n  name         = \"web3\"\n  machine_type = \"f1-micro\"\n  \n  boot_disk {\n    initialize_params {\n      image = \"debian-cloud/debian-11\"\n    }\n  }\n\n  network_interface {\n    network = data.google_compute_network.default.self_link\n    subnetwork = google_compute_subnetwork.subnet-1.self_link\n  }  \n}\n\n## DB\nresource \"google_compute_instance\" \"mysqldb\" {\n  name         = \"mysqldb\"\n  machine_type = \"f1-micro\"\n  \n  boot_disk {\n    initialize_params {\n      image = \"debian-cloud/debian-11\"\n    }\n  }\n\n  network_interface {\n    network = data.google_compute_network.default.self_link\n    subnetwork = google_compute_subnetwork.subnet-1.self_link\n  }  \n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.tf b/main.tf
+--- a/main.tf	(revision 93825cfe6c5ccd69e4cb95fd0fed9110c5e46d1e)
++++ b/main.tf	(date 1701683764730)
+@@ -1,6 +1,6 @@
+ ### PROVIDER
+ provider "google" {
+-  project = "advancedterraform" #replace this with your project-id
++  project = "elite-vault-406816" #replace this with your project-id
+   region  = "us-central1"
+   zone    = "us-central1-a"
+ }
